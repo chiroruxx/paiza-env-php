@@ -2,6 +2,7 @@
 
 namespace Chiroruxx\PaizaEnvPhp\Commands;
 
+use Chiroruxx\PaizaEnvPhp\Helpers\Path;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -14,8 +15,6 @@ class MakeStubCommand extends Command
 {
     protected static $defaultName = 'paiza:make';
 
-    /** @var string */
-    private $basePath;
     /** @var Filesystem */
     private $fileSystem;
 
@@ -25,7 +24,6 @@ class MakeStubCommand extends Command
             ->setHelp('Make stub.')
             ->addArgument('target', InputArgument::REQUIRED, 'Your code directory name.');
 
-        $this->basePath = realpath(__DIR__ . '/..');
         $this->fileSystem = new Filesystem();
     }
 
@@ -35,10 +33,9 @@ class MakeStubCommand extends Command
         $this->writeFile($path);
     }
 
-    private function resolvePath(string $target)
+    private function resolvePath(string $target): string
     {
-        $s = DIRECTORY_SEPARATOR;
-        $path = "{$this->basePath}{$s}src{$s}{$target}";
+        $path = Path::src($target);
         if ($this->fileSystem->exists($path)) {
             throw new RuntimeException("{$path} already exists.");
         }
@@ -49,12 +46,10 @@ class MakeStubCommand extends Command
     private function writeFile(string $path)
     {
         $finder = new Finder();
-        $s = DIRECTORY_SEPARATOR;
-        $finder->in("{$this->basePath}{$s}templates");
+        $finder->in(Path::templates());
         foreach ($finder as $file) {
             $main = $file->getContents();
-            echo $file->getFilename();
-            $this->fileSystem->dumpFile($path . DIRECTORY_SEPARATOR . $file->getFilename(), $main);
+            $this->fileSystem->dumpFile(Path::build($path, $file->getFilename()), $main);
         }
     }
 }

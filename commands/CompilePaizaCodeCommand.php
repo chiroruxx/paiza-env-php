@@ -2,6 +2,7 @@
 
 namespace Chiroruxx\PaizaEnvPhp\Commands;
 
+use Chiroruxx\PaizaEnvPhp\Helpers\Path;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,15 +15,6 @@ class CompilePaizaCodeCommand extends Command
     /** @var string */
     protected static $defaultName = 'paiza:compile';
 
-    /** @var string */
-    private $baseDir;
-
-    /** @var string */
-    private $srcDir;
-
-    /** @var string */
-    private $outputDir;
-
     /**
      * @inheritDoc
      */
@@ -31,11 +23,6 @@ class CompilePaizaCodeCommand extends Command
         $this->setDescription('Compile your code.')
             ->setHelp('Compile to paiza code from your code.')
             ->addArgument('target', InputArgument::REQUIRED, 'Your code directory name.');
-
-        $this->baseDir = realpath(__DIR__ . '/..');
-        $s = DIRECTORY_SEPARATOR;
-        $this->srcDir = "{$this->baseDir}{$s}src{$s}";
-        $this->outputDir = "{$this->baseDir}{$s}compiled{$s}";
     }
 
     /**
@@ -59,7 +46,7 @@ class CompilePaizaCodeCommand extends Command
         $code = '<?php' . PHP_EOL;
 
         $finder = new Finder();
-        $finder->files()->in("{$this->srcDir}{$target}");
+        $finder->files()->in(Path::src($target));
         foreach ($finder as $file) {
             $code .= preg_replace('/^<\?php/', '', $file->getContents()) . PHP_EOL;
         }
@@ -76,10 +63,10 @@ class CompilePaizaCodeCommand extends Command
     private function writeFile(string $target, string $code): void
     {
         $fileSystem = new Filesystem();
-        if (!$fileSystem->exists($this->outputDir)) {
-            $fileSystem->mkdir($this->outputDir);
+        if (!$fileSystem->exists(Path::compiled())) {
+            $fileSystem->mkdir(Path::compiled());
         }
 
-        $fileSystem->dumpFile("{$this->outputDir}{$target}.php", $code);
+        $fileSystem->dumpFile(Path::compiled("{$target}.php"), $code);
     }
 }

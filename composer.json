@@ -1,0 +1,21 @@
+{
+    "name": "chiroruxx/paiza-env-php",
+    "description": "Create smart development environment for paiza skill check.",
+    "authors": [
+        {
+            "name": "chiroruxx",
+            "email": "dormir.kazu@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Chiroruxx\\PaizaEnvPhp\\Commands\\" : "commands/"
+        }
+    },
+    "require": {
+        "php": "^7.0.6",
+        "symfony/console": "^3.4",
+        "symfony/filesystem": "^3.4",
+        "symfony/finder": "3.4"
+    }
+}

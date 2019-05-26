@@ -11,7 +11,7 @@ class Path
      */
     public static function base(): string
     {
-        return realpath(__DIR__ . '/..');
+        return realpath(__DIR__ . '/../..');
     }
 
     /**
@@ -55,6 +55,6 @@ class Path
      */
     public static function templates(string ...$subs): string
     {
-        return self::build(self::base(), 'templates', ...$subs);
+        return self::build(self::base(), 'service', 'templates', ...$subs);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Chiroruxx\PaizaEnvPhp\Commands\CompilePaizaCodeCommand;
 use Chiroruxx\PaizaEnvPhp\Commands\MakeStubCommand;

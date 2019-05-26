@@ -2,4 +2,6 @@ compiled/*
 !compiled/.gitkeep
 src/*
 !src/.gitkeep
+tests/*
+!tests/.gitkeep
 vendor/

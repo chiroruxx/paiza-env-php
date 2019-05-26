@@ -9,7 +9,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Chiroruxx\\PaizaEnvPhp\\Commands\\" : "commands/"
+            "Chiroruxx\\PaizaEnvPhp\\Commands\\" : "commands/",
+            "Chiroruxx\\PaizaEnvPhp\\Helpers\\" : "helpers/"
         }
     },
     "require": {
